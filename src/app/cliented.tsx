@@ -14,6 +14,7 @@ import { useState, useEffect } from "react"
 
 export default function Cliented({ lang = "en" }) {
   const [result, setResult] = useState("")
+  const [error, setError] = useState<any>()
   const [loading, setLoading] = useState(false)
   const [recording, setRecording] = useState(false)
   const [audo, setAudo] = useState<any>()
@@ -57,12 +58,10 @@ export default function Cliented({ lang = "en" }) {
                   body: JSON.stringify({ audio: base64Audio, language: lang }),
                 })
                 setLoading(false)
+
                 const data = await response.json()
-                if (response.status !== 200) {
-                  throw (
-                    data.error ||
-                    new Error(`Request failed with status ${response.status}`)
-                  )
+                if (!response.ok) {
+                  setError(data.error)
                 }
                 setResult(result + "\n" + data.result)
               }
@@ -74,7 +73,9 @@ export default function Cliented({ lang = "en" }) {
           // @ts-ignore
           setMediaRecorder(newMediaRecorder)
         })
-        .catch((err) => console.error("Error accessing microphone:", err))
+        .catch((err) =>
+          setError("Error accessing microphone:" + JSON.stringify(err)),
+        )
     }
   }, [])
   // Function to start recording
@@ -116,6 +117,7 @@ export default function Cliented({ lang = "en" }) {
             </Button>
           )}
         </div>
+        {error && "Error: " + JSON.stringify(error)}
         <p className="flex max-w-3xl">{result}</p>
         {loading && <Loader2Icon className="animate-spin" />}
       </div>
