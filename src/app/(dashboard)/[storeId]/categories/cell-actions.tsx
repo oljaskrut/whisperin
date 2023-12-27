@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
-import { BillboardColumn } from "./columns"
+import { CategoryColumn } from "./columns"
 import { Button } from "@/components/ui/button"
 import { CopyIcon, EditIcon, MoreHorizontalIcon, TrashIcon } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
@@ -16,7 +16,7 @@ import { useState } from "react"
 import axios from "axios"
 import { AlertModal } from "@/components/modals/alert-modal"
 
-export const CellAction = ({ data }: { data: BillboardColumn }) => {
+export const CellAction = ({ data }: { data: CategoryColumn }) => {
   const router = useRouter()
   const params = useParams()
 
