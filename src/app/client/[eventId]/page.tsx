@@ -26,7 +26,7 @@ const BillboardPage = async ({ params }: { params: { eventId: string } }) => {
           height={200}
           className="rounded-lg object-cover aspect-square"
         />
-        <p className="">{format(event.date, "dd.MM")}</p>
+        <p className="">{"date"}</p>
 
         <Link href={`/client/${event.id}/book`} className={buttonVariants()}>
           Book

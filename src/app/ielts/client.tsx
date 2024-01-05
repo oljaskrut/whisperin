@@ -20,6 +20,7 @@ import toast from "react-hot-toast"
 import { z } from "zod"
 
 const formSchema = z.object({
+  task: z.string().min(1),
   text: z.string().min(1),
 })
 
@@ -68,6 +69,26 @@ export const Client = () => {
           className="space-y-8 w-full"
         >
           <div className="">
+            <FormField
+              control={form.control}
+              name="task"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl font-bold">
+                    Task question
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Paste your writing task question here"
+                      className="resize-none"
+                      rows={6}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="text"

@@ -17,6 +17,7 @@ model Store {
   updatedAt   DateTime    @updatedAt()
   billboards  Billboard[] @relation("StoreToBillboard")
   categories  Category[]  @relation("StoreToCategory")
+  Event       Event[]
 }
 
 model Billboard {
@@ -33,32 +34,52 @@ model Billboard {
 }
 
 model Event {
-  id          String   @id @default(cuid())
+  id          String @id @default(cuid())
   title       String
   description String
   images      String
-  date        DateTime
+  date        Date[]
+
+  storeId String
+  store   Store  @relation(fields: [storeId], references: [id])
+
+  capacity Int
 
   active Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
   orders    Order[]
+
+  @@index([storeId])
+}
+
+model Date {
+  id      String   @id @default(cuid())
+  eventId String
+  event   Event    @relation(fields: [eventId], references: [id])
+  date    DateTime @unique
+
+  Order Order[]
+
+  @@index([eventId])
 }
 
 model Order {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   userId    String
   eventId   String
   guest_num Int
-  date      DateTime
+  date      Date   @relation(fields: [dateId], references: [id])
 
   paid      Boolean  @default(false)
   event     Event    @relation(fields: [eventId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+  dateId    String
 
   @@index([eventId])
+  @@index([dateId])
 }
 
 model Category {

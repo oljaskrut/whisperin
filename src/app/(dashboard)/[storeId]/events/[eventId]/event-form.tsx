@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Event } from "@prisma/client"
 import axios from "axios"
-import { CalendarIcon, Trash2Icon } from "lucide-react"
+import { CalendarIcon, Minus, Plus, Trash2Icon } from "lucide-react"
 import { useRouter, useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -38,6 +38,7 @@ import { format } from "date-fns"
 const formSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
+  capacity: z.number().min(1),
   images: z.any(),
   date: z.date(),
 })
@@ -59,6 +60,7 @@ export const EventForm = ({ event }: { event: Event | null }) => {
       title: "",
       images: "",
       description: "",
+      capacity: 0,
     },
   })
 
@@ -239,7 +241,46 @@ export const EventForm = ({ event }: { event: Event | null }) => {
             />
           </div>
 
-          <div className="flex">
+          <FormField
+            control={form.control}
+            name="capacity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xl font-bold">Capacity</FormLabel>
+                <div className="w-48 flex justify-between">
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    className="rounded-full"
+                    type="button"
+                    onClick={() =>
+                      form.setValue("capacity", form.getValues("capacity") - 1)
+                    }
+                    disabled={form.getValues("capacity") <= 0}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <div className="text-lg font-bold">
+                    {form.getValues("capacity")}
+                  </div>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    className="rounded-full"
+                    type="button"
+                    onClick={() =>
+                      form.setValue("capacity", form.getValues("capacity") + 1)
+                    }
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex-col">
             <FormField
               control={form.control}
               name="date"
@@ -279,6 +320,7 @@ export const EventForm = ({ event }: { event: Event | null }) => {
                 </FormItem>
               )}
             />
+            Add date
           </div>
 
           <Button disabled={loading} className="ml-auto" type="submit">

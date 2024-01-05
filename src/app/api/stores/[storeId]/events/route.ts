@@ -4,24 +4,34 @@ import { prisma } from "@/lib/db"
 
 export async function POST(
   req: Request,
-  { params }: { params: { storeId: string } },
+  { params: { storeId } }: { params: { storeId: string } },
 ) {
   try {
     const { userId } = auth()
 
     if (!userId) return new NextResponse("Unauthorized", { status: 403 })
 
-    const { title, description, images, date } = await req.json()
+    const { title, description, images, date, capacity } = await req.json()
 
-    if (!title || !description || !images || !date)
+    if (!title || !description || !images || !date || !capacity)
       return new NextResponse("Missing parameters", { status: 400 })
 
     const store = await prisma.event.create({
       data: {
+        storeId,
         title,
         images,
         description,
-        date,
+        capacity,
+        date: {
+          connectOrCreate: {
+            create:{date},
+						where:{
+							
+						}
+						
+          },
+        },
       },
     })
 

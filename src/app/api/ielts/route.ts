@@ -7,8 +7,9 @@ const openai = new OpenAI({
 })
 
 export async function POST(request: Request) {
-  const { text } = await request.json()
-  if (!text) return new NextResponse("No name or description", { status: 400 })
+  const { task, text } = await request.json()
+  if (!task || !text)
+    return new NextResponse("No name or description", { status: 400 })
 
   console.time("creation")
   const res = await openai.beta.threads.createAndRun({
@@ -16,7 +17,11 @@ export async function POST(request: Request) {
     thread: {
       messages: [
         {
-          content: text,
+          content: `IELTS Task Question: ${task}`,
+          role: "user",
+        },
+        {
+          content: `IELTS Task Answer: ${text}`,
           role: "user",
         },
       ],

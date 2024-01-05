@@ -2,9 +2,25 @@ import { format } from "date-fns"
 import { EventClient } from "./client"
 import { prisma } from "@/lib/db"
 
-const Events = async ({ params }: { params: { storeId: string } }) => {
+const Events = async ({
+  params: { storeId },
+}: {
+  params: { storeId: string }
+}) => {
   const events = await prisma.event.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: { storeId },
+    include: {
+      date: {
+        orderBy: { date: "asc" },
+        take: 1,
+        select: {
+          date: true,
+        },
+      },
+    },
   })
 
   return (
@@ -13,7 +29,7 @@ const Events = async ({ params }: { params: { storeId: string } }) => {
         <EventClient
           events={events.map((e) => ({
             ...e,
-            date: format(e.date, "MMMM do"),
+            date: format(e.date[0].date, "MMMM do"),
           }))}
         />
       </div>

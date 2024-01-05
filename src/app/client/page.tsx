@@ -23,7 +23,7 @@ export default async function Page() {
             height={200}
             className="rounded-lg object-cover aspect-square"
           />
-          <p className="">{format(event.date, "dd MMM")}</p>
+          <p className="">date</p>
         </Link>
       ))}
     </div>
