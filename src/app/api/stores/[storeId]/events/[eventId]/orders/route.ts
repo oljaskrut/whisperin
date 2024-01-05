@@ -16,14 +16,16 @@ export async function POST(
     if (!guest_num)
       return new NextResponse("Missing parameters", { status: 400 })
 
-    const store = await prisma.order.create({
-      data: {
-        eventId,
-        guest_num,
-        userId,
-        date,
-      },
-    })
+    // const store = await prisma.order.create({
+    //   data: {
+    //     eventId,
+    //     guest_num,
+    //     userId,
+    // 		dateId:
+    //   },
+    // })
+
+    const store = { msg: "lol" }
 
     return NextResponse.json(store)
   } catch (e) {

@@ -4,7 +4,6 @@ import { auth } from "@clerk/nextjs"
 import { format } from "date-fns"
 import Link from "next/link"
 import { notFound, useRouter, redirect } from "next/navigation"
-import { BookForm } from "./book-form"
 
 const BillboardPage = async ({
   params: { eventId },
@@ -30,14 +29,14 @@ const BillboardPage = async ({
           <p className="">{event.description}</p>
         </div>
 
-        <p className="">Date: {format(event.date, "dd.MM")}</p>
+        <p className="">Date: </p>
 
         <p>
           User:
           {user?.firstName} {user?.lastName}
         </p>
 
-        <BookForm order={{ userId, eventId, date: event.date }} />
+        {/* <BookForm order={{ userId, eventId, date: event.date }} /> */}
       </div>
     </div>
   )

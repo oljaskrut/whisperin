@@ -25,11 +25,10 @@ export async function POST(
         capacity,
         date: {
           connectOrCreate: {
-            create:{date},
-						where:{
-							
-						}
-						
+            create: { date },
+            where: {
+              date,
+            },
           },
         },
       },
